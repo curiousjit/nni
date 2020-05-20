@@ -73,7 +73,7 @@ jobs:
     displayName: 'build nni bdsit_wheel'
   - task: PublishPipelineArtifact@1
     inputs:
-      targetPath: '$(Build.SourcesDirectory)/dist/*.whl'
+      targetPath: '$(Build.SourcesDirectory)/dist'
       artifact: '$(version_string)'
       publishLocation: 'pipeline'
   - script: |
@@ -133,7 +133,8 @@ jobs:
     displayName: 'build nni bdsit_wheel'
   - task: PublishPipelineArtifact@1
     inputs:
-      targetPath: '$(Build.SourcesDirectory)/dist/*.whl'
+      targetPath: '$(Build.SourcesDirectory)/dist'
+      artifact: '$(version_string)'
       publishLocation: 'pipeline'
 
 - job: 'Build_win32'
@@ -167,7 +168,8 @@ jobs:
     displayName: 'build nni bdsit_wheel'
   - task: PublishPipelineArtifact@1
     inputs:
-      targetPath: '$(Build.SourcesDirectory)/dist/*.whl'
+      targetPath: '$(Build.SourcesDirectory)/dist'
+      artifact: '$(version_string)'
       publishLocation: 'pipeline'
 
 
@@ -202,5 +204,6 @@ jobs:
     displayName: 'build nni bdsit_wheel'
   - task: PublishPipelineArtifact@1
     inputs:
-      targetPath: '$(Build.SourcesDirectory)/dist/*.whl'
+      targetPath: '$(Build.SourcesDirectory)/dist'
+      artifact: '$(version_string)'
       publishLocation: 'pipeline'
