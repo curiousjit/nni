@@ -74,7 +74,7 @@ jobs:
   - task: PublishPipelineArtifact@1
     inputs:
       targetPath: '$(Pipeline.Workspace)/dist/*.whl'
-      artifact: '$(version_string)/*'
+      artifact: '$(version_string)'
       publishLocation: 'pipeline'
   - script: |
       cd deployment/docker
