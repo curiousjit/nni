@@ -73,7 +73,7 @@ jobs:
     displayName: 'build nni bdsit_wheel'
   - task: PublishPipelineArtifact@1
     inputs:
-      targetPath: '$(Build.SourcesDirectory)/dist'
+      targetPath: '$(Build.SourcesDirectory)/deployment/pypi/dist'
       artifact: '$(version_string)'
       publishLocation: 'pipeline'
   - script: |
