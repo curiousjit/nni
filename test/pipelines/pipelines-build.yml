@@ -14,10 +14,10 @@ jobs:
       export build_version=$(Build_SourceBranchName).$(Build_SourceVersion)
       echo $(build_version)
       if [[ $(build_version) =~ ^v[0-9](.[0-9]){1,3}$ ]]; then
-        echo 'valid build version $(build_version)'
+        echo 'valid build version ' $(build_version)
         echo `git describe --tags --abbrev=0`
       else
-        echo 'invalid build version $(build_version)'
+        echo 'invalid build version ' $(build_version)
         exit 1
       fi
     condition: eq( variables['build_type'], 'dev' )
@@ -26,10 +26,10 @@ jobs:
   - script: |
       echo $(build_version)
       if [[ $(build_version) =~ ^v[0-9](.[0-9]){1,3}$ ]]; then
-        echo 'valid build version $(build_version)'
+        echo 'valid build version ' $(build_version)
         echo `git describe --tags --abbrev=0`
       else
-        echo 'invalid build version $(build_version)'
+        echo 'invalid build version ' $(build_version)
         exit 1
       fi
     condition: eq( variables['build_type'], 'prerelease' )
