@@ -12,6 +12,7 @@ jobs:
   steps:
   - script: |
       export build_version=$(Build_SourceBranchName).$(Build_SourceVersion)
+      echo $(build_version)
       if [[ $(build_version) =~ ^v[0-9](.[0-9]){1,3}$ ]]; then
         echo 'valid build version $(build_version)'
         echo `git describe --tags --abbrev=0`
