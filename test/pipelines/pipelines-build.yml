@@ -42,14 +42,6 @@ jobs:
       echo $(version.build_version)
     displayName: 'Validate prerelease version number'
 
-  - script: |
-    condition: eq( variables['build_type'], 'prerelease' )
-    displayName: 'Validate prerelease version number'
-
-  - script: |
-    condition: eq( variables['build_type'], 'release' )
-    displayName: 'Validate release version number and branch tag'
-
 
 - job: 'Build_ubuntu'
   dependsOn: versionJob
