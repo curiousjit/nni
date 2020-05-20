@@ -19,7 +19,7 @@ $NNI_VERSION_VALUE = git describe --tags --abbrev=0
 # To include time stamp in version value, run:
 # make version_ts=true build
 
-if($version_ts != ""){
+if($version_string != ""){
     $NNI_VERSION_VALUE = "$version_string.$TIME_STAMP"
 }
 
