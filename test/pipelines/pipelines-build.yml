@@ -39,7 +39,7 @@ jobs:
       fi
     name: version
   - script: |
-      echo $(version.build_version)
+      echo $(version.version_string)
     displayName: 'Validate prerelease version number'
 
 
@@ -70,7 +70,7 @@ jobs:
         # git tag $(build_version)
         echo $(version_string)
         echo 'building dev package...'
-        make version_string=version_string build
+        make version_string=$(version_string) build
       fi
     displayName: 'build nni bdsit_wheel'
   - task: PublishPipelineArtifact@1
