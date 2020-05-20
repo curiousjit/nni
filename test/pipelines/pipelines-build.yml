@@ -35,7 +35,7 @@ jobs:
     displayName: 'Validate release version number and branch tag'
 
 
-- job: 'Build_upload_nni_ubuntu'
+- job: 'Build_ubuntu'
   dependsOn: version_number_validation
   condition: succeeded()
   pool:
@@ -62,7 +62,6 @@ jobs:
         echo 'building release package...'
         make build
       fi
-    condition: eq( variables['upload_package'], 'true')
     displayName: 'build nni bdsit_wheel'
 
   - script: |
@@ -85,9 +84,9 @@ jobs:
       docker build -f Dockerfile -t $IMG_NAME:$IMG_TAG .
 
     condition: eq( variables['build_docker_img'], 'true')
-    displayName: 'build and upload nni docker image'
+    displayName: 'build and docker image'
 
-- job: 'Build_upload_nni_macos'
+- job: 'Build_macos'
   dependsOn: version_number_validation
   condition: succeeded()
   pool:
@@ -117,11 +116,10 @@ jobs:
         echo 'building release package...'
         PATH=$HOME/Library/Python/3.7/bin:$PATH make build
       fi
-    condition: eq( variables['upload_package'], 'true')
     displayName: 'build nni bdsit_wheel'
 
 
-- job: 'Build_upload_nni_win32'
+- job: 'Build_win32'
   dependsOn: version_number_validation
   condition: succeeded()
   pool:
@@ -147,11 +145,10 @@ jobs:
         Write-Host 'building release package...'
         .\install.ps1 -version_os 32 -version_ts $False
       }
-    condition: eq( variables['upload_package'], 'true')
     displayName: 'build nni bdsit_wheel'
 
 
-- job: 'Build_upload_nni_win_amd64'
+- job: 'Build_win_amd64'
   dependsOn: version_number_validation
   condition: succeeded()
   pool:
@@ -177,5 +174,4 @@ jobs:
         Write-Host 'building release package...'
         .\install.ps1 -version_os 64 -version_ts $False
       }
-    condition: eq( variables['upload_package'], 'true')
     displayName: 'build nni bdsit_wheel'
