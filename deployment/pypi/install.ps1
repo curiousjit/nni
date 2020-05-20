@@ -1,4 +1,4 @@
-param([int]$version_os, [bool]$version_ts=$false)
+param([int]$version_os, [string]$version_string="")
 [System.Net.ServicePointManager]::DefaultConnectionLimit = 100
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 $CWD = $PWD
@@ -19,8 +19,8 @@ $NNI_VERSION_VALUE = git describe --tags --abbrev=0
 # To include time stamp in version value, run:
 # make version_ts=true build
 
-if($version_ts){
-    $NNI_VERSION_VALUE = "$NNI_VERSION_VALUE.$TIME_STAMP"
+if($version_ts != ""){
+    $NNI_VERSION_VALUE = "$version_string.$TIME_STAMP"
 }
 
 $NNI_VERSION_TEMPLATE = "999.0.0-developing"

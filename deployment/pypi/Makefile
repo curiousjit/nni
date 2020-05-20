@@ -15,9 +15,9 @@ TIME_STAMP = $(shell date -u "+%y%m%d%H%M")
 NNI_VERSION_VALUE = $(shell git describe --tags --abbrev=0)
 
 # To include time stamp in version value, run:
-# make version_ts=true build
-ifeq ($(version_ts), true)
-	NNI_VERSION_VALUE := $(NNI_VERSION_VALUE).$(TIME_STAMP)
+# make version_string build
+ifneq ($(version_string), "")
+	NNI_VERSION_VALUE := $(version_string).$(TIME_STAMP)
 endif
 NNI_VERSION_TEMPLATE = 999.0.0-developing
 NNI_YARN_TARBALL ?= $(CWD)nni-yarn.tar.gz
