@@ -11,7 +11,7 @@ jobs:
         PYTHON_VERSION: '3.6'
   steps:
   - script: |
-      echo "##vso[task.setvariable variable=build_version;isOutput=true]`git rev-parse --abbrev-ref HEAD`.`git show --format=%h.%cd --no-patch --date=format:'%Y%m%d-%H%M%S'`"
+      echo "##vso[task.setvariable variable=build_version;isOutput=true]$(Build.SourceBranchName).`git show --format=%h.%cd --no-patch --date=format:'%Y%m%d-%H%M%S'`"
     name: version
   - script: |
       echo $(version.build_version)
