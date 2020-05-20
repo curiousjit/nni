@@ -133,7 +133,7 @@ jobs:
     displayName: 'build nni bdsit_wheel'
   - task: PublishPipelineArtifact@1
     inputs:
-      targetPath: '$(Build.Repository.LocalPath)/dist/*.whl'
+      targetPath: '$(Build.SourcesDirectory)/dist/*.whl'
       publishLocation: 'pipeline'
 
 - job: 'Build_win32'
