@@ -73,7 +73,7 @@ jobs:
     displayName: 'build nni bdsit_wheel'
   - task: PublishPipelineArtifact@1
     inputs:
-      targetPath: '$(Pipeline.Workspace)/dist/*.whl'
+      targetPath: '$(Build.SourcesDirectory)/dist/*.whl'
       artifact: '$(version_string)'
       publishLocation: 'pipeline'
   - script: |
@@ -167,7 +167,7 @@ jobs:
     displayName: 'build nni bdsit_wheel'
   - task: PublishPipelineArtifact@1
     inputs:
-      targetPath: '$(Pipeline.Workspace)/dist/*.whl'
+      targetPath: '$(Build.SourcesDirectory)/dist/*.whl'
       publishLocation: 'pipeline'
 
 
@@ -202,5 +202,5 @@ jobs:
     displayName: 'build nni bdsit_wheel'
   - task: PublishPipelineArtifact@1
     inputs:
-      targetPath: '$(Pipeline.Workspace)/dist/*.whl'
+      targetPath: '$(Build.SourcesDirectory)/dist/*.whl'
       publishLocation: 'pipeline'
