@@ -53,7 +53,7 @@ jobs:
       Python36:
         PYTHON_VERSION: '3.6'
   variables:
-      version_string: $[ dependencies.versionJob.outputs['version.build_version'] ]
+      version_string: $[ dependencies.versionJob.outputs['version.version_string'] ]
   steps:
   - script: |
       python3 -m pip install --upgrade pip setuptools --user
@@ -61,21 +61,22 @@ jobs:
 
   - script: |
       cd deployment/pypi
-      if [ $(build_type) = 'prerelease' ]
+      if [ $(build_type) = 'release' ]
       then
-        # NNI build scripts (Makefile) uses branch tag as package version number
-        # git tag $(build_version)
-        echo $(build_version)
-        echo 'building prerelease package...'
-        make version_string=true build
-      else
         echo 'building release package...'
         make build
+      else
+        # NNI build scripts (Makefile) uses branch tag as package version number
+        # git tag $(build_version)
+        echo $(version_string)
+        echo 'building dev package...'
+        make version_string=version_string build
       fi
     displayName: 'build nni bdsit_wheel'
   - task: PublishPipelineArtifact@1
     inputs:
       targetPath: '$(Pipeline.Workspace)/dist/*.whl'
+      artifact: '$(version_string)/*'
       publishLocation: 'pipeline'
   - script: |
       cd deployment/docker
