@@ -15,13 +15,6 @@ jobs:
     name: version
   - script: |
       echo $(version.build_version)
-      if [[ $(version.build_version) =~ ^v[0-9](.[0-9]){1,3}$ ]]; then
-        echo 'valid build version $(version.build_version)'
-        echo `git describe --tags --abbrev=0`
-      else
-        echo 'invalid build version $(version.build_version)'
-        exit 1
-      fi
     condition: eq( variables['build_type'], 'dev' )
     displayName: 'Validate prerelease version number'
 
