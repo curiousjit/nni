@@ -60,8 +60,7 @@ jobs:
       Python36:
         PYTHON_VERSION: '3.6'
   variables:
-    versionJob:
-      version_number: $[ dependencies.versionJob.outputs['versionJob.version.build_version']]
+      version_number: $[ dependencies.versionJob.outputs['version.build_version'] ]
   steps:
   - script: |
       python3 -m pip install --upgrade pip setuptools --user
