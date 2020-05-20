@@ -11,34 +11,42 @@ jobs:
         PYTHON_VERSION: '3.6'
   steps:
   - script: |
-      echo "##vso[task.setvariable variable=build_version;isOutput=true]$(Build.SourceBranchName).`git show --format=%h.%cd --no-patch --date=format:'%Y%m%d-%H%M%S'`"
+      if [ $(build_type) = 'release' ]
+      then
+        export BRANCH_TAG=`git describe --tags --abbrev=0`
+        echo $BRANCH_TAG
+        if [[ $BRANCH_TAG = $(build_version) && $BRANCH_TAG =~ ^v[0-9](.[0-9]){1,3}$ ]]; then
+          echo 'Build version match branch tag'
+        else
+          echo 'Build version does not match branch tag'
+          exit 1
+        fi
+      elif [ $(build_type) = 'prerelease' ]
+      then
+        echo $(build_version)
+        if [[ $(build_version) =~ ^v[0-9](.[0-9]){1,3}$ ]]; then
+          echo 'valid build version $(build_version) '
+          echo `git describe --tags --abbrev=0`
+        else
+          echo 'invalid build version $(build_version) '
+          exit 1
+        fi
+      else
+        # NNI build scripts (Makefile) uses branch tag as package version number
+        # git tag $(build_version)
+        echo "##vso[task.setvariable variable=version_string;isOutput=true]$(Build.SourceBranchName).`git show --format=%h.%cd --no-patch --date=format:'%Y%m%d-%H%M%S'`"
+        echo $(version_string)
+      fi
     name: version
   - script: |
       echo $(version.build_version)
-    condition: eq( variables['build_type'], 'dev' )
     displayName: 'Validate prerelease version number'
 
   - script: |
-      echo $(build_version)
-      if [[ $(build_version) =~ ^v[0-9](.[0-9]){1,3}$ ]]; then
-        echo 'valid build version $(build_version) '
-        echo `git describe --tags --abbrev=0`
-      else
-        echo 'invalid build version $(build_version) '
-        exit 1
-      fi
     condition: eq( variables['build_type'], 'prerelease' )
     displayName: 'Validate prerelease version number'
 
   - script: |
-      export BRANCH_TAG=`git describe --tags --abbrev=0`
-      echo $BRANCH_TAG
-      if [[ $BRANCH_TAG = $(build_version) && $BRANCH_TAG =~ ^v[0-9](.[0-9]){1,3}$ ]]; then
-        echo 'Build version match branch tag'
-      else
-        echo 'Build version does not match branch tag'
-        exit 1
-      fi
     condition: eq( variables['build_type'], 'release' )
     displayName: 'Validate release version number and branch tag'
 
