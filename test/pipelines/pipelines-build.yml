@@ -34,7 +34,7 @@ jobs:
       else
         # NNI build scripts (Makefile) uses branch tag as package version number
         # git tag $(build_version)
-        echo "##vso[task.setvariable variable=version_string;isOutput=true]$(Build.SourceBranchName).`git show --format=%h.%cd --no-patch --date=format:'%Y%m%d-%H%M%S'`"
+        echo "##vso[task.setvariable variable=version_string;isOutput=true]$(Build.SourceBranchName).`git show --format=%h --no-patch`"
       fi
     name: version
   - script: echo $(version.version_string)
