@@ -19,6 +19,18 @@ jobs:
         echo 'invalid build version $(build_version)'
         exit 1
       fi
+    condition: eq( variables['build_type'], 'dev' )
+    displayName: 'Validate prerelease version number'
+
+  - script: |
+      echo $(build_version)
+      if [[ $(build_version) =~ ^v[0-9](.[0-9]){1,3}$ ]]; then
+        echo 'valid build version $(build_version)'
+        echo `git describe --tags --abbrev=0`
+      else
+        echo 'invalid build version $(build_version)'
+        exit 1
+      fi
     condition: eq( variables['build_type'], 'prerelease' )
     displayName: 'Validate prerelease version number'
 
@@ -63,7 +75,10 @@ jobs:
         make build
       fi
     displayName: 'build nni bdsit_wheel'
-
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(Pipeline.Workspace)/dist/*.whl'
+      publishLocation: 'pipeline'
   - script: |
       cd deployment/docker
 
@@ -117,7 +132,10 @@ jobs:
         PATH=$HOME/Library/Python/3.7/bin:$PATH make build
       fi
     displayName: 'build nni bdsit_wheel'
-
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(Pipeline.Workspace)/dist/*.whl'
+      publishLocation: 'pipeline'
 
 - job: 'Build_win32'
   dependsOn: version_number_validation
@@ -146,6 +164,10 @@ jobs:
         .\install.ps1 -version_os 32 -version_ts $False
       }
     displayName: 'build nni bdsit_wheel'
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(Pipeline.Workspace)/dist/*.whl'
+      publishLocation: 'pipeline'
 
 
 - job: 'Build_win_amd64'
@@ -175,3 +197,7 @@ jobs:
         .\install.ps1 -version_os 64 -version_ts $False
       }
     displayName: 'build nni bdsit_wheel'
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(Pipeline.Workspace)/dist/*.whl'
+      publishLocation: 'pipeline'
