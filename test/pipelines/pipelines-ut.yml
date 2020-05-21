@@ -7,6 +7,16 @@ jobs:
     vmImage: 'Ubuntu 18.04'
 
   steps:
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      buildType: 'specific'
+      project: '19edabee-823b-4f46-a6f9-307afeed5334'
+      definition: '46'
+      specificBuildWithTriggering: true
+      buildVersionToDownload: 'latest'
+      allowPartiallySucceededBuilds: true
+      artifactName: 'linux'
+      targetPath: '$(Pipeline.Workspace)'
   - script: |
       python3 -m pip install --upgrade pip setuptools --user
       python3 -m pip install pylint==2.3.1 astroid==2.2.5 --user
@@ -14,8 +24,8 @@ jobs:
       echo "##vso[task.setvariable variable=PATH]${HOME}/.local/bin:${PATH}"
     displayName: 'Install python tools'
   - script: |
-      source install.sh
-    displayName: 'Install nni toolkit via source code'
+      python3 -m pip install *.whl
+    displayName: 'Install nni'
   - script: |
       set -e
       cd src/nni_manager
