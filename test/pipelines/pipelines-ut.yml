@@ -149,8 +149,9 @@ jobs:
       python3 -m pip install torchvision==0.6.0 torch==1.5.0 --user
       python3 -m pip install tensorflow==1.15.2 --user
       brew install swig@3
-      rm /usr/local/bin/swig
-      ln -s /usr/local/opt/swig\@3/bin/swig /usr/local/bin/swig
+      # rm /usr/local/bin/swig
+      # ln -s /usr/local/opt/swig\@3/bin/swig /usr/local/bin/swig
+      export PATH="/usr/local/opt/swig@3/bin:$PATH"
       nnictl package install --name=SMAC
     displayName: 'Install dependencies'
   - script: |
@@ -167,7 +168,7 @@ jobs:
     vmImage: 'vs2017-win2016'
 
   steps:
-  - script: rmdir /s /q $(Pipeline.Workspace)/whl
+  - script: if exist $(Pipeline.Workspace)\whl rmdir /s /q $(Pipeline.Workspace)\whl
   - task: DownloadPipelineArtifact@2
     inputs:
       buildType: 'specific'
