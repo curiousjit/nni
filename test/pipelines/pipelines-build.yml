@@ -74,7 +74,7 @@ jobs:
   - task: PublishPipelineArtifact@1
     inputs:
       targetPath: '$(Build.SourcesDirectory)/deployment/pypi/dist'
-      artifact: '$(version_string)'
+      artifact: 'linux'
       publishLocation: 'pipeline'
   - script: |
       cd deployment/docker
@@ -95,7 +95,7 @@ jobs:
       cat Dockerfile
       docker build -f Dockerfile -t $IMG_NAME:$IMG_TAG .
 
-    condition: eq( variables['build_docker_img'], 'true')
+    # condition: eq( variables['build_docker_img'], 'true')
     displayName: 'build and docker image'
 
 - job: 'Build_macos'
@@ -133,8 +133,8 @@ jobs:
     displayName: 'build nni bdsit_wheel'
   - task: PublishPipelineArtifact@1
     inputs:
-      targetPath: '$(Build.SourcesDirectory)/dist'
-      artifact: '$(version_string)'
+      targetPath: '$(Build.SourcesDirectory)/deployment/pypi/dist'
+      artifact: 'mac'
       publishLocation: 'pipeline'
 
 - job: 'Build_win32'
@@ -168,8 +168,8 @@ jobs:
     displayName: 'build nni bdsit_wheel'
   - task: PublishPipelineArtifact@1
     inputs:
-      targetPath: '$(Build.SourcesDirectory)/dist'
-      artifact: '$(version_string)'
+      targetPath: '$(Build.SourcesDirectory)/deployment/pypi/dist'
+      artifact: 'win32'
       publishLocation: 'pipeline'
 
 
@@ -204,6 +204,6 @@ jobs:
     displayName: 'build nni bdsit_wheel'
   - task: PublishPipelineArtifact@1
     inputs:
-      targetPath: '$(Build.SourcesDirectory)/dist'
-      artifact: '$(version_string)'
+      targetPath: '$(Build.SourcesDirectory)/deployment/pypi/dist'
+      artifact: 'win64'
       publishLocation: 'pipeline'
