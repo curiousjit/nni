@@ -7,6 +7,7 @@ jobs:
     vmImage: 'Ubuntu 18.04'
 
   steps:
+  - script: rm -rf $(Pipeline.Workspace)/whl
   - task: DownloadPipelineArtifact@2
     inputs:
       buildType: 'specific'
@@ -25,7 +26,7 @@ jobs:
       echo "##vso[task.setvariable variable=PATH]${HOME}/.local/bin:${PATH}"
     displayName: 'Install python tools'
   - script: |
-      cd whl
+      cd $(Pipeline.Workspace)/whl
       python3 -m pip install `ls *.whl`
     displayName: 'Install nni'
   - script: |
@@ -78,6 +79,7 @@ jobs:
     vmImage: 'Ubuntu 16.04'
 
   steps:
+  - script: rm -rf $(Pipeline.Workspace)/whl
   - task: DownloadPipelineArtifact@2
     inputs:
       buildType: 'specific'
@@ -95,7 +97,7 @@ jobs:
       echo "##vso[task.setvariable variable=PATH]${HOME}/.local/bin:${PATH}"
     displayName: 'Install python tools'
   - script: |
-      cd whl
+      cd $(Pipeline.Workspace)/whl
       python3 -m pip install `ls *.whl`
     displayName: 'Install nni'
   - script: |
@@ -122,6 +124,7 @@ jobs:
     vmImage: 'macOS-10.15'
 
   steps:
+  - script: rm -rf $(Pipeline.Workspace)/whl
   - task: DownloadPipelineArtifact@2
     inputs:
       buildType: 'specific'
@@ -136,7 +139,7 @@ jobs:
   - script: python3 -m pip install --upgrade pip setuptools
     displayName: 'Install python tools'
   - script: |
-      cd whl
+      cd $(Pipeline.Workspace)/whl
       python3 -m pip install `ls *.whl`
       echo "##vso[task.setvariable variable=PATH]${HOME}/Library/Python/3.7/bin:${PATH}"
     displayName: 'Install nni'
@@ -163,6 +166,7 @@ jobs:
     vmImage: 'vs2017-win2016'
 
   steps:
+  - script: rmdir /s /q $(Pipeline.Workspace)/whl
   - task: DownloadPipelineArtifact@2
     inputs:
       buildType: 'specific'
@@ -175,7 +179,7 @@ jobs:
       artifactName: 'win64'
       targetPath: '$(Pipeline.Workspace)/whl'
   - script: |
-      cd whl
+      cd $(Pipeline.Workspace)/whl
       python3 -m pip install `ls *.whl`
     displayName: 'Install nni'
   - script: |
