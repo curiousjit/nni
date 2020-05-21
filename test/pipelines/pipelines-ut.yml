@@ -19,14 +19,14 @@ jobs:
       artifactName: 'linux'
       targetPath: '$(Pipeline.Workspace)/whl'
   - script: |
-      cd whl
-      python3 -m pip install `ls *.whl`
-  - script: |
       python3 -m pip install --upgrade pip setuptools --user
       python3 -m pip install pylint==2.3.1 astroid==2.2.5 --user
       python3 -m pip install coverage --user
       echo "##vso[task.setvariable variable=PATH]${HOME}/.local/bin:${PATH}"
     displayName: 'Install python tools'
+  - script: |
+      cd whl
+      python3 -m pip install `ls *.whl`
     displayName: 'Install nni'
   - script: |
       set -e
@@ -78,14 +78,26 @@ jobs:
     vmImage: 'Ubuntu 16.04'
 
   steps:
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      buildType: 'specific'
+      project: '19edabee-823b-4f46-a6f9-307afeed5334'
+      definition: '46'
+      specificBuildWithTriggering: true
+      buildVersionToDownload: 'latest'
+      allowPartiallySucceededBuilds: true
+      allowFailedBuilds: true
+      artifactName: 'linux'
+      targetPath: '$(Pipeline.Workspace)/whl'
   - script: |
       python3 -m pip install --upgrade pip setuptools --user
       python3 -m pip install coverage --user
       echo "##vso[task.setvariable variable=PATH]${HOME}/.local/bin:${PATH}"
     displayName: 'Install python tools'
   - script: |
-      source install.sh
-    displayName: 'Install nni toolkit via source code'
+      cd whl
+      python3 -m pip install `ls *.whl`
+    displayName: 'Install nni'
   - script: |
       python3 -m pip install torch==1.3.1+cpu torchvision==0.4.2+cpu -f https://download.pytorch.org/whl/torch_stable.html --user
       python3 -m pip install tensorflow==1.15.2 --user
@@ -110,12 +122,24 @@ jobs:
     vmImage: 'macOS-10.15'
 
   steps:
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      buildType: 'specific'
+      project: '19edabee-823b-4f46-a6f9-307afeed5334'
+      definition: '46'
+      specificBuildWithTriggering: true
+      buildVersionToDownload: 'latest'
+      allowPartiallySucceededBuilds: true
+      allowFailedBuilds: true
+      artifactName: 'mac'
+      targetPath: '$(Pipeline.Workspace)/whl'
   - script: python3 -m pip install --upgrade pip setuptools
     displayName: 'Install python tools'
   - script: |
-      source install.sh
+      cd whl
+      python3 -m pip install `ls *.whl`
       echo "##vso[task.setvariable variable=PATH]${HOME}/Library/Python/3.7/bin:${PATH}"
-    displayName: 'Install nni toolkit via source code'
+    displayName: 'Install nni'
   - script: |
       # pytorch Mac binary does not support CUDA, default is cpu version
       python3 -m pip install torchvision==0.6.0 torch==1.5.0 --user
@@ -139,9 +163,21 @@ jobs:
     vmImage: 'vs2017-win2016'
 
   steps:
+  - task: DownloadPipelineArtifact@2
+    inputs:
+      buildType: 'specific'
+      project: '19edabee-823b-4f46-a6f9-307afeed5334'
+      definition: '46'
+      specificBuildWithTriggering: true
+      buildVersionToDownload: 'latest'
+      allowPartiallySucceededBuilds: true
+      allowFailedBuilds: true
+      artifactName: 'win64'
+      targetPath: '$(Pipeline.Workspace)/whl'
   - script: |
-      powershell.exe -file install.ps1
-    displayName: 'Install nni toolkit via source code'
+      cd whl
+      python3 -m pip install `ls *.whl`
+    displayName: 'Install nni'
   - script: |
       python -m pip install scikit-learn==0.20.0 --user
       python -m pip install keras==2.1.6 --user
