@@ -32,11 +32,11 @@ jobs:
   - script: |
       set -e
       cd src/nni_manager
-      yarn install @typescript-eslint/eslint-plugin
+      yarn add @typescript-eslint/eslint-plugin
       yarn eslint
       # uncomment following 2 lines to enable webui eslint
       cd ../webui
-      yarn install @typescript-eslint/eslint-plugin
+      yarn add @typescript-eslint/eslint-plugin
       yarn eslint
     displayName: 'Run eslint'
   - script: |
@@ -183,7 +183,7 @@ jobs:
       targetPath: '$(Pipeline.Workspace)/whl'
   - script: |
       cd $(Pipeline.Workspace)/whl
-      python -m pip install *.whl --user
+      FOR %%G IN ("*.whl") DO python -m pip install %%G --user
     displayName: 'Install nni'
   - script: |
       python -m pip install scikit-learn==0.20.0 --user
