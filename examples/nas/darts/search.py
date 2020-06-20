@@ -29,7 +29,7 @@ if __name__ == "__main__":
 
     dataset_train, dataset_valid = datasets.get_dataset("cifar10")
 
-    model = CNN(32, 3, args.channels, 6, args.layers)
+    model = CNN(32, 3, args.channels, 10, args.layers)
     criterion = nn.CrossEntropyLoss()
 
     optim = torch.optim.SGD(model.parameters(), 0.025, momentum=0.9, weight_decay=3.0E-4)
