@@ -27,9 +27,9 @@ if __name__ == "__main__":
     parser.add_argument("--visualization", default=False, action="store_true")
     args = parser.parse_args()
 
-    dataset_train, dataset_valid = datasets.get_dataset("cifar10")
+    dataset_train, dataset_valid = datasets.get_dataset("aoi")
 
-    model = CNN(32, 3, args.channels, 10, args.layers)
+    model = CNN(32, 3, args.channels, 6, args.layers)
     criterion = nn.CrossEntropyLoss()
 
     optim = torch.optim.SGD(model.parameters(), 0.025, momentum=0.9, weight_decay=3.0E-4)
@@ -45,7 +45,8 @@ if __name__ == "__main__":
                            batch_size=args.batch_size,
                            log_frequency=args.log_frequency,
                            unrolled=args.unrolled,
-                           callbacks=[LRSchedulerCallback(lr_scheduler), ArchitectureCheckpoint("./checkpoints")])
+                           callbacks=[LRSchedulerCallback(lr_scheduler), ArchitectureCheckpoint("./checkpoints_aoi")])
     if args.visualization:
         trainer.enable_visualization()
     trainer.train()
+    trainer.export(file="final_architecture.json")
