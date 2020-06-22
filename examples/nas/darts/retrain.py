@@ -3,6 +3,7 @@
 
 import logging
 import time
+import os
 from argparse import ArgumentParser
 
 import torch
@@ -117,9 +118,9 @@ if __name__ == "__main__":
     parser.add_argument("--arc-checkpoint", default="./checkpoints/epoch_0.json")
 
     args = parser.parse_args()
-    dataset_train, dataset_valid = datasets.get_dataset("cifar10", cutout_length=16)
+    dataset_train, dataset_valid = datasets.get_dataset("aoi")
 
-    model = CNN(32, 3, 36, 10, args.layers, auxiliary=True)
+    model = CNN(32, 3, 36, 6, args.layers, auxiliary=True)
     apply_fixed_architecture(model, args.arc_checkpoint)
     criterion = nn.CrossEntropyLoss()
 
@@ -141,6 +142,7 @@ if __name__ == "__main__":
                                                pin_memory=True)
 
     best_top1 = 0.
+    model_dir='./model_retrain_FixClasses'
     for epoch in range(args.epochs):
         drop_prob = args.drop_path_prob * epoch / args.epochs
         model.drop_path_prob(drop_prob)
@@ -152,7 +154,10 @@ if __name__ == "__main__":
         cur_step = (epoch + 1) * len(train_loader)
         top1 = validate(args, valid_loader, model, criterion, epoch, cur_step)
         best_top1 = max(best_top1, top1)
-
+        state_dict=model.state_dict()
         lr_scheduler.step()
 
     logger.info("Final best Prec@1 = {:.4%}".format(best_top1))
+    dest_path = os.path.join(model_dir, "epoch_{}.pth.tar".format(epoch))
+    logger.info("Saving model to %s", dest_path)
+    torch.save(state_dict, dest_path)
